@@ -39,7 +39,7 @@ st.title("📈 Predicción de Ventas y Simulación de Estado de Resultados")
 
 # --- PARÁMETROS ---
 horizonte_futuro = 12
-archivo_path = r"C:\\Users\\Juanr\Downloads\\EBITDA_AfA_USA.xlsx"
+archivo_path = "EBITDA_AfA_USA.xlsx"
 
 # --- CARGA DIRECTA ---
 df = pd.read_excel(archivo_path)
