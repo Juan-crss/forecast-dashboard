@@ -1,0 +1,17 @@
+geopandas
+plotly
+numpy
+pandas
+optuna
+lightgbm
+xgboost
+catboost
+scikit-learn
+imbalanced-learn
+boruta
+seaborn
+matplotlib
+streamlit
+statsmodels
+prophet
+openpyxl
