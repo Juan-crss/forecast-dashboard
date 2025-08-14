@@ -13,7 +13,7 @@ st.set_page_config(page_title="Proyección Financiera 2025", layout="wide")
 st.title("📊 Proyección de Ventas, Costos, UB, Gastos y EBITDA")
 
 # --- PARÁMETROS GLOBALES ---
-archivo_path = r"C:\\Users\\jromero\\Downloads\\EBITDA_AfA_USA.xlsx"
+archivo_path = "EBITDA_Asimetrix.xlsx"
 horizonte_futuro = 12
 fecha_max_real = '2025-07-31'  # Julio 2025
 crecimiento_pct = st.slider("🔧 Ajuste de crecimiento sobre predicción (%)", -0.5, 0.5, 0.0, step=0.01)
