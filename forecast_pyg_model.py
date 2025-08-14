@@ -106,22 +106,57 @@ df_ytd_24 = df_total[(df_total['Fecha'] >= '2024-01-01') & (df_total['Fecha'] <=
 df_ytd_25 = df_total[(df_total['Fecha'] >= '2025-01-01') & (df_total['Fecha'] <= mes_corte)]
 
 resumen = {
-    'Concepto': ['UTILIDAD BRUTA', 'EBITDA'],
-    'YTD Jul 24': [df_ytd_24['UB_Hist'].sum(), df_ytd_24['EBITDA_Hist'].sum()],
-    'YTD Jul-25': [df_ytd_25['UB_Base'].sum(), df_ytd_25['EBITDA_Base'].sum()],
-    'YTD Jul-25 Ppto': [df_ytd_25['UB_Hist'].sum(), df_ytd_25['EBITDA_Hist'].sum()],
+    'Concepto': [
+        'INGRESO NETO', 'TOTAL COSTOS', 'UTILIDAD BRUTA',
+        'TOTAL GASTOS', 'EBITDA', 'Margen Bruto', 'Margen Ebitda'
+    ],
+    'YTD 24': [
+        df_ytd_24['Ventas_Hist'].sum(),
+        df_ytd_24['Costos_Hist'].sum(),
+        df_ytd_24['UB_Hist'].sum(),
+        df_ytd_24['Gastos_Hist'].sum(),
+        df_ytd_24['EBITDA_Hist'].sum(),
+        df_ytd_24['UB_Hist'].sum() / df_ytd_24['Ventas_Hist'].sum(),
+        df_ytd_24['EBITDA_Hist'].sum() / df_ytd_24['Ventas_Hist'].sum()
+    ],
+    'YTD 25': [
+        df_ytd_25['Ventas_Base'].sum(),
+        df_ytd_25['Costos_Base'].sum(),
+        df_ytd_25['UB_Base'].sum(),
+        df_ytd_25['Gastos_Base'].sum(),
+        df_ytd_25['EBITDA_Base'].sum(),
+        df_ytd_25['UB_Base'].sum() / df_ytd_25['Ventas_Base'].sum(),
+        df_ytd_25['EBITDA_Base'].sum() / df_ytd_25['Ventas_Base'].sum()
+    ],
+    'YTD 25 Ppto': [
+        df_ytd_25['Ventas_Hist'].sum(),
+        df_ytd_25['Costos_Hist'].sum(),
+        df_ytd_25['UB_Hist'].sum(),
+        df_ytd_25['Gastos_Hist'].sum(),
+        df_ytd_25['EBITDA_Hist'].sum(),
+        df_ytd_25['UB_Hist'].sum() / df_ytd_25['Ventas_Hist'].sum(),
+        df_ytd_25['EBITDA_Hist'].sum() / df_ytd_25['Ventas_Hist'].sum()
+    ]
 }
 
-df_tabla = pd.DataFrame(resumen)
-df_tabla['% Cumpl'] = df_tabla['YTD Jul-25'] / df_tabla['YTD Jul-25 Ppto']
-df_tabla['% Var.'] = (df_tabla['YTD Jul-25'] / df_tabla['YTD Jul 24']) - 1
+# Calcular cumplimiento y variación
+resumen['% Cumpl'] = [
+    resumen['YTD 25'][i] / resumen['YTD 25 Ppto'][i] if resumen['YTD 25 Ppto'][i] != 0 else np.nan
+    for i in range(len(resumen['YTD 25']))
+]
+resumen['% Var.'] = [
+    (resumen['YTD 25'][i] / resumen['YTD 24'][i] - 1) if resumen['YTD 24'][i] != 0 else np.nan
+    for i in range(len(resumen['YTD 24']))
+]
 
+df_tabla = pd.DataFrame(resumen)
 st.subheader("📊 Comparativo YTD Jul 25 vs Jul 24 y Presupuesto")
 st.dataframe(df_tabla.style.format({
-    'YTD Jul 24': '$ {:,.0f}',
-    'YTD Jul-25': '$ {:,.0f}',
-    'YTD Jul-25 Ppto': '$ {:,.0f}',
+    'YTD 24': '$ {:,.0f}',
+    'YTD 25': '$ {:,.0f}',
+    'YTD 25 Ppto': '$ {:,.0f}',
     '% Cumpl': '{:.2%}',
     '% Var.': '{:.2%}'
 }), use_container_width=True)
+
 
